@@ -4,7 +4,7 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include <WebSerial.h>
-#include <stairs.h>
+#include <stairsWeb.h>
 
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
@@ -58,7 +58,7 @@ void setup() {
         request->send_P(200, "text/html", index_html, NULL);
     });
 
-    Stairs.begin(&server);
+    StairsWeb.begin(&server);
 
     WebSerial.begin(&server);
     WebSerial.msgCallback(recvMsg);

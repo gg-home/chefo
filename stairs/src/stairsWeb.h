@@ -77,7 +77,7 @@ const char stairs_html[] PROGMEM = R"rawliteral(
 // Define the array of leds
 CRGB leds[NUM_LEDS];
 
-class StairsClass{
+class StairsWebClass{
 
 public:
     void begin(AsyncWebServer *server, const char* url = "/stairs"){
@@ -162,4 +162,4 @@ private:
     #endif
 };
 
-StairsClass Stairs;
+StairsWebClass StairsWeb;
