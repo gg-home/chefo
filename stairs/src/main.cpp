@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Credentials.h>
 #include <WiFi.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
@@ -72,11 +73,6 @@ const char index_html[] PROGMEM = R"rawliteral(
 </html>
 )rawliteral";  
 
-
-// WiFi config
-const char *SSID = "";
-const char *PWD = "";
-
 // Web server running on port 80
 AsyncWebServer server(80);
 // Web socket
@@ -91,9 +87,9 @@ CRGB leds[NUM_LEDS];
 
 void connectToWiFi() {
   Serial.print("Connecting to ");
-  Serial.println(SSID);
+  Serial.println(WIFI_SSID);
   
-  WiFi.begin(SSID, PWD);
+  WiFi.begin(WIFI_SSID, WIFI_PW);
   
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
