@@ -33,7 +33,11 @@ public:
 
     void live()
     {
-        if(waitForCalibrationToFinish(10000) == false)
+        if(waitForCalibrationToFinish(10000))
+        {
+            Serial.println(F("Calibrating..."));
+        }
+        else
         {
             litAll(color, brightness);
             delay(500);
