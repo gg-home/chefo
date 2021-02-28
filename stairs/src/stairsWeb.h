@@ -2,6 +2,7 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include <FastLED.h>
+#include <Stairs.h>
 
 const char stairs_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
@@ -70,22 +71,10 @@ const char stairs_html[] PROGMEM = R"rawliteral(
 </html>
 )rawliteral";
 
-// How many leds in your strip?
-#define NUM_LEDS 1000
-#define DATA_PIN 2
-
-// Define the array of leds
-CRGB leds[NUM_LEDS];
-
 class StairsWebClass{
 
 public:
     void begin(AsyncWebServer *server, const char* url = "/stairs"){
-
-        FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
-        FastLED.setBrightness(20);
-        leds[0] = CRGB::Red;
-        FastLED.show();
 
         _server = server;
         _ws = new AsyncWebSocket("/stairsws");
@@ -116,10 +105,6 @@ public:
         });
 
         _server->addHandler(_ws);
-
-        #if defined(DEBUG)
-            DEBUG_WEB_SERIAL("Attached AsyncWebServer along with Websockets");
-        #endif
     }
 
 private:
@@ -146,20 +131,10 @@ private:
                 }
             }
 
-            FastLED.setBrightness(brightness);
-
             int color = strtol(&hexColor[0], NULL, 16);
-            leds[0] = color;
-
-            FastLED.show();
+            Stairs.calibrate(color, brightness);
         }
     }
-    
-    #if defined(DEBUG)
-        void DEBUG_WEB_SERIAL(const char* message){
-            Serial.println("[WebSerial] "+message);
-        }
-    #endif
 };
 
 StairsWebClass StairsWeb;

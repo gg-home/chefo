@@ -3,7 +3,7 @@
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <WebSerial.h>
-#include <stairsWeb.h>
+#include <StairsWeb.h>
 
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
@@ -58,6 +58,7 @@ void setup() {
     });
 
     StairsWeb.begin(&server);
+    Stairs.initialize();
 
     WebSerial.begin(&server);
     WebSerial.msgCallback(recvMsg);
@@ -66,5 +67,5 @@ void setup() {
 }
 
 void loop() {
-
+    Stairs.live();
 }
