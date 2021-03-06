@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <Credentials.h>
-#include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <WebSerial.h>
 #include <OTA.h>
