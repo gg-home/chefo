@@ -3,7 +3,9 @@
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <WebSerial.h>
+#include <OTA.h>
 #include <StairsWeb.h>
+
 
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
@@ -25,21 +27,6 @@ const char index_html[] PROGMEM = R"rawliteral(
 // Web server running on port 80
 AsyncWebServer server(80);
 
-void connectToWiFi() {
-  Serial.print("Connecting to ");
-  Serial.println(WIFI_SSID);
-  
-  WiFi.begin(WIFI_SSID, WIFI_PW);
-  
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
- 
-  Serial.print("Connected. IP: ");
-  Serial.println(WiFi.localIP());
-}
-
 void recvMsg(uint8_t *data, size_t len){
     String d = "";
     for(int i=0; i < len; i++){
@@ -50,8 +37,8 @@ void recvMsg(uint8_t *data, size_t len){
 
 void setup() {
     Serial.begin(9600);
-
-    connectToWiFi();
+    
+    setupOTA("ChefoStairs", WIFI_SSID, WIFI_PW);
 
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
         request->send_P(200, "text/html", index_html, NULL);
@@ -67,5 +54,7 @@ void setup() {
 }
 
 void loop() {
+    ArduinoOTA.handle();
+
     Stairs.live();
 }
